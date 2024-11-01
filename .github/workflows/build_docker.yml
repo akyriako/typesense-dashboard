@@ -18,13 +18,12 @@ jobs:
       with:
         # list of Docker images to use as base name for tags
         images: |
-          ${{ vars.CONTAINER_REGISTRY_REPO }}/typesense-dashboard
+          ${{ vars.CONTAINER_REGISTRY_ORG }}/typesense-dashboard
         # generate Docker tags based on the following events/attributes
         tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=${{ vars.APP_VERSION }}.${{github.run_number}}
+          type=raw,value=${{ steps.commit_hash.outputs.short }}
+          type=raw,value=latest
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
