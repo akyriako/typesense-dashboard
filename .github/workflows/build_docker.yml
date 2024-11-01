@@ -21,7 +21,8 @@ jobs:
           ${{ vars.CONTAINER_REGISTRY_ORG }}/typesense-dashboard
         # generate Docker tags based on the following events/attributes
         tags: |
-          type=raw,value=${{ vars.APP_VERSION }}.${{github.run_number}}
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
           type=raw,value=${{ steps.commit_hash.outputs.short }}
           type=raw,value=latest
     - name: Set up QEMU
