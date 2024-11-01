@@ -11,7 +11,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Get Commit Hash
+      id: commit_hash
+      uses: prompt/actions-commit-hash@v3
+
     - name: Docker meta
       id: meta
       uses: docker/metadata-action@v5
@@ -21,8 +27,7 @@ jobs:
           ${{ vars.CONTAINER_REGISTRY_ORG }}/typesense-dashboard
         # generate Docker tags based on the following events/attributes
         tags: |
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}}
           type=raw,value=${{ steps.commit_hash.outputs.short }}
           type=raw,value=latest
     - name: Set up QEMU
